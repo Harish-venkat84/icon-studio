@@ -25,7 +25,7 @@ jobs:
         if: env.NPM_TOKEN == ''
         run: echo "::notice::Add an NPM_TOKEN repository secret to publish the icons package to npm."
 
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         if: env.NPM_TOKEN != ''
 
       - uses: pnpm/action-setup@v6
