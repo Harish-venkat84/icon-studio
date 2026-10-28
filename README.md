@@ -10,6 +10,11 @@ There is no database. Your icons live in your own Git repository, and every save
 a commit, so icon changes have history, can be reviewed in pull requests, and can be reverted with
 git.
 
+**Live demo: [icon-studio-three.vercel.app](https://icon-studio-three.vercel.app)**, log in with
+username `admin` and password `admin`. The demo is read-only: you can browse icons, preview them at
+any size and color, try uploading an SVG to see it cleaned up, and copy usage snippets, but saving,
+deleting and releasing are turned off.
+
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="docs/screenshots/gallery-dark.png">
   <img alt="Icon library in Icon Studio" src="docs/screenshots/gallery-light.png">
@@ -260,6 +265,7 @@ GitHub API.
 | `ICONS_GITHUB_BRANCH`     | no                 | Branch the studio commits to. Default `main`.                            |
 | `ICONS_REPO_DIR`          | no, with `fs`      | Path to the repository root. Default `../..` from `apps/studio`.         |
 | `STUDIO_ALLOWED_ORIGINS`  | no (build time)    | Extra host names allowed to call server actions behind a proxy.          |
+| `STUDIO_READ_ONLY`        | no                 | `true` for a public demo: browsing works, saving/deleting/releasing off. |
 
 GitHub reserves the `GITHUB_` prefix for its own variables, hence the `ICONS_` names. Commits are
 made with the token's identity, and the studio user is recorded in each commit as a
@@ -268,6 +274,18 @@ made with the token's identity, and the studio user is recorded in each commit a
 Icon commits made from the studio go to `ICONS_GITHUB_BRANCH`. If you point it at a branch other
 than `main` (for example to review icon changes in a pull request), the package is published once
 that branch is merged into `main`.
+
+### Free hosting on Vercel
+
+The studio also runs on Vercel's free Hobby plan (GitHub storage only, since Vercel's disk is
+read-only):
+
+1. Import your repository on [vercel.com/new](https://vercel.com/new), set **Root Directory** to
+   `apps/studio` and keep the **Next.js** preset.
+2. Add the environment variables `ICONS_STORAGE=github`, `ICONS_GITHUB_TOKEN`,
+   `ICONS_GITHUB_REPOSITORY`, `ICONS_GITHUB_BRANCH`, `STUDIO_USERS`, and
+   `ENABLE_EXPERIMENTAL_COREPACK=1` (so Vercel uses the pnpm version pinned in `package.json`).
+3. Deploy. Add `STUDIO_READ_ONLY=true` if the deployment is a public demo.
 
 ## Publishing your own package
 

@@ -14,6 +14,7 @@ import {
   type ReleaseImpact,
   type VersionBump as Bump,
 } from '@/lib/version'
+import { useReadOnly } from './providers'
 import { ConfirmDialog } from './ui/confirm_dialog'
 import { Spinner } from './ui/spinner'
 import { useToast } from './ui/toast'
@@ -58,6 +59,7 @@ interface ReleaseFormProps {
 export function ReleaseForm({ version, changes, impact, changesNote }: ReleaseFormProps) {
   const router = useRouter()
   const toast = useToast()
+  const readOnly = useReadOnly()
   const recommended = impact ? recommendedBump(version, impact) : null
   const [bump, setBump] = useState<Bump>(recommended ?? 'patch')
   const [confirming, setConfirming] = useState(false)
@@ -219,7 +221,7 @@ export function ReleaseForm({ version, changes, impact, changesNote }: ReleaseFo
           <motion.button
             type="button"
             onClick={() => setConfirming(true)}
-            disabled={pending || problem !== null}
+            disabled={readOnly || pending || problem !== null}
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.97 }}
             className="group inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-brand-500 to-violet-500 px-5 py-2.5 text-sm font-semibold text-white shadow-lg shadow-brand-500/25 disabled:opacity-60"

@@ -18,6 +18,7 @@ import {
   type SaveIconInput,
 } from '@/lib/icons'
 import { deleteImage, findDuplicateImage, saveImage } from '@/lib/images'
+import { isReadOnly, READ_ONLY_MESSAGE } from '@/lib/read_only'
 import { currentUser } from '@/lib/user'
 import type { VersionBump } from '@/lib/version'
 
@@ -30,6 +31,8 @@ function failure(error: unknown): { ok: false; error: string } {
   console.error(error)
   return { ok: false, error: `Something went wrong: ${(error as Error).message}` }
 }
+
+const readOnlyFailure = { ok: false, error: READ_ONLY_MESSAGE } as const
 
 export async function processSvgAction(
   raw: string,
@@ -62,6 +65,7 @@ export async function processSvgAction(
 export async function saveIconAction(
   input: SaveIconInput & { meta: IconMetaInput }
 ): Promise<ActionResult<{ slug: string }>> {
+  if (isReadOnly()) return readOnlyFailure
   try {
     const meta = await saveIcon(input, await currentUser())
     revalidatePath('/', 'layout')
@@ -72,6 +76,7 @@ export async function saveIconAction(
 }
 
 export async function deleteIconAction(slug: string): Promise<ActionResult<null>> {
+  if (isReadOnly()) return readOnlyFailure
   try {
     await deleteIcon(slug, await currentUser())
     revalidatePath('/', 'layout')
@@ -82,6 +87,7 @@ export async function deleteIconAction(slug: string): Promise<ActionResult<null>
 }
 
 export async function releaseAction(bump: VersionBump): Promise<ActionResult<{ version: string }>> {
+  if (isReadOnly()) return readOnlyFailure
   if (!['patch', 'minor', 'major'].includes(bump)) return { ok: false, error: 'Unknown bump' }
   try {
     const version = await releaseVersion(bump, await currentUser())
@@ -93,6 +99,7 @@ export async function releaseAction(bump: VersionBump): Promise<ActionResult<{ v
 }
 
 export async function saveImageAction(formData: FormData): Promise<ActionResult<{ slug: string }>> {
+  if (isReadOnly()) return readOnlyFailure
   try {
     const file = formData.get('file')
     let png: Uint8Array | undefined
@@ -129,6 +136,7 @@ export async function saveImageAction(formData: FormData): Promise<ActionResult<
 }
 
 export async function deleteImageAction(slug: string): Promise<ActionResult<null>> {
+  if (isReadOnly()) return readOnlyFailure
   try {
     await deleteImage(slug, await currentUser())
     revalidatePath('/', 'layout')

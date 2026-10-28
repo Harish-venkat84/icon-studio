@@ -5,6 +5,7 @@ import { NavLinks } from '@/components/nav_links'
 import { Providers } from '@/components/providers'
 import { ThemeToggle } from '@/components/theme_toggle'
 import { getRepository } from '@/lib/icons'
+import { isReadOnly, READ_ONLY_MESSAGE } from '@/lib/read_only'
 import { themeInitScript } from '@/lib/theme'
 import { currentUser } from '@/lib/user'
 import './globals.css'
@@ -19,6 +20,7 @@ export const metadata: Metadata = {
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
   const user = await currentUser()
+  const readOnly = isReadOnly()
   const repository = (() => {
     try {
       return getRepository()
@@ -38,7 +40,12 @@ export default async function RootLayout({ children }: { children: React.ReactNo
       </head>
       <body className="min-h-dvh">
         <Backdrop />
-        <Providers>
+        <Providers readOnly={readOnly}>
+          {readOnly && (
+            <div className="border-b border-amber-500/20 bg-amber-500/10 px-4 py-2 text-center text-sm text-amber-800 dark:text-amber-300">
+              {READ_ONLY_MESSAGE}
+            </div>
+          )}
           <header className="sticky top-0 z-40 border-b border-zinc-200/60 bg-zinc-50/70 backdrop-blur-xl dark:border-white/5 dark:bg-zinc-950/60">
             <div className="mx-auto flex max-w-7xl flex-wrap items-center gap-x-6 gap-y-3 px-4 py-3 sm:px-6">
               <Link href="/" className="group flex items-center gap-2.5">

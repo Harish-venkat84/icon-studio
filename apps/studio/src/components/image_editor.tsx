@@ -19,6 +19,7 @@ import { formatBytes, imageUrl } from '@/lib/image_url'
 import { BACKGROUND_CLASSES, type PreviewBackground } from './preview_controls'
 import { ConfirmDialog } from './ui/confirm_dialog'
 import { DuplicateNotice } from './ui/duplicate_notice'
+import { useReadOnly } from './providers'
 import { Field, Notice, Section, StatusLine } from './ui/form'
 import { Portal } from './ui/portal'
 import { Segmented } from './ui/segmented'
@@ -131,6 +132,7 @@ export function ImageEditor({
   const slugValid = SLUG_PATTERN.test(slug)
   const exportName = slugValid ? toImageExportName(slug) : null
   const renamed = isEdit && initial?.slug !== slug
+  const readOnly = useReadOnly()
   const busy = saving || deleting || inspecting
   const problem = !preview
     ? null
@@ -148,7 +150,7 @@ export function ImageEditor({
     slug !== initial.slug ||
     alt.trim() !== initial.alt ||
     parseTags(tags).join(',') !== initial.tags.join(',')
-  const canSave = Boolean(preview) && !problem && !busy && changed && !duplicate
+  const canSave = !readOnly && Boolean(preview) && !problem && !busy && changed && !duplicate
 
   const save = () => {
     if (!canSave) return
@@ -522,7 +524,7 @@ export function ImageEditor({
               <button
                 type="button"
                 onClick={() => setConfirmDelete(true)}
-                disabled={busy}
+                disabled={busy || readOnly}
                 className="inline-flex items-center gap-1.5 rounded-xl px-3 py-2 text-sm font-medium text-red-600 transition hover:bg-red-500/10 disabled:opacity-40 dark:text-red-400"
               >
                 <Trash2 className="size-4" />

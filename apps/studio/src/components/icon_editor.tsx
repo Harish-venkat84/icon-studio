@@ -40,6 +40,7 @@ import { ConfirmDialog } from './ui/confirm_dialog'
 import { Segmented } from './ui/segmented'
 import { Portal } from './ui/portal'
 import { DuplicateNotice } from './ui/duplicate_notice'
+import { useReadOnly } from './providers'
 import { Field, Notice, Section, StatusLine } from './ui/form'
 import { Spinner } from './ui/spinner'
 import { TagField } from './ui/tag_field'
@@ -181,10 +182,17 @@ export function IconEditor({ initial, knownTags = [] }: IconEditorProps) {
   }
 
   const renamed = isEdit && initial?.meta.slug !== slug
+  const readOnly = useReadOnly()
   const busy = saving || deleting
   const duplicate = processed?.duplicate ?? null
   const canSave =
-    Boolean(processed) && validation.success && !missingTags && !busy && !processing && !duplicate
+    !readOnly &&
+    Boolean(processed) &&
+    validation.success &&
+    !missingTags &&
+    !busy &&
+    !processing &&
+    !duplicate
 
   const save = () => {
     if (!canSave) return
@@ -806,7 +814,7 @@ export function IconEditor({ initial, knownTags = [] }: IconEditorProps) {
               <button
                 type="button"
                 onClick={() => setConfirmDelete(true)}
-                disabled={busy}
+                disabled={busy || readOnly}
                 className="inline-flex items-center gap-1.5 rounded-xl px-3 py-2 text-sm font-medium text-red-600 transition hover:bg-red-500/10 disabled:opacity-40 dark:text-red-400"
               >
                 <Trash2 className="size-4" />
