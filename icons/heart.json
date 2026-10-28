@@ -1,0 +1,14 @@
+{
+  "name": "Heart",
+  "slug": "heart",
+  "tags": [
+    "social"
+  ],
+  "mode": "mono",
+  "defaults": {
+    "size": 24
+  },
+  "colorProps": [],
+  "createdAt": "2026-10-28T00:00:00.000Z",
+  "updatedAt": "2026-10-28T00:00:00.000Z"
+}

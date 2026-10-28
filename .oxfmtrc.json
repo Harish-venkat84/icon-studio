@@ -1,0 +1,25 @@
+{
+  "$schema": "./node_modules/oxfmt/configuration_schema.json",
+  "semi": false,
+  "singleQuote": true,
+  "trailingComma": "es5",
+  "printWidth": 100,
+  "tabWidth": 2,
+  "useTabs": false,
+  "sortPackageJson": false,
+  "sortTailwindcss": {
+    "stylesheet": "apps/studio/src/app/globals.css",
+    "functions": ["cn"]
+  },
+  "ignorePatterns": [
+    "node_modules",
+    ".next",
+    "dist",
+    "packages/icons/src/generated",
+    "pnpm-lock.yaml",
+    "*.yml",
+    "*.svg",
+    "icons/*.json",
+    "images/*.json"
+  ]
+}

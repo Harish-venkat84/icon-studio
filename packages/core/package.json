@@ -1,0 +1,30 @@
+{
+  "name": "@icon-studio/core",
+  "license": "MIT",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts",
+    "./meta": "./src/meta.ts",
+    "./render": "./src/render.ts",
+    "./codegen": "./src/codegen.ts",
+    "./image": "./src/image.ts",
+    "./usage": "./src/usage.ts",
+    "./version": "./src/version.ts",
+    "./release": "./src/release.ts"
+  },
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "svgo": "^4.0.0",
+    "zod": "^4.3.6"
+  },
+  "devDependencies": {
+    "@types/node": "^24",
+    "typescript": "^5",
+    "vitest": "^5.0.3"
+  }
+}

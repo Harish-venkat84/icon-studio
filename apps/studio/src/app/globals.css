@@ -1,0 +1,105 @@
+@import 'tailwindcss';
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+  --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, SFMono-Regular, monospace;
+  --color-brand-50: #eff8ff;
+  --color-brand-100: #dbeefe;
+  --color-brand-200: #bfe2fe;
+  --color-brand-300: #93d0fd;
+  --color-brand-400: #60b4fa;
+  --color-brand-500: #0091ff;
+  --color-brand-600: #0074db;
+  --color-brand-700: #005db0;
+  --animate-drift: drift 22s ease-in-out infinite alternate;
+  --animate-drift-slow: drift 30s ease-in-out infinite alternate-reverse;
+  --animate-shimmer: shimmer 1.6s ease-in-out infinite;
+
+  @keyframes shimmer {
+    100% {
+      transform: translateX(100%);
+    }
+  }
+
+  @keyframes drift {
+    0% {
+      transform: translate3d(0, 0, 0) scale(1);
+    }
+    100% {
+      transform: translate3d(4%, 6%, 0) scale(1.08);
+    }
+  }
+}
+
+:root {
+  color-scheme: light;
+  --checker-a: #ffffff;
+  --checker-b: #e4e4e7;
+}
+
+.dark {
+  color-scheme: dark;
+  --checker-a: #18181b;
+  --checker-b: #27272a;
+}
+
+body {
+  @apply bg-zinc-50 font-sans text-zinc-900 antialiased dark:bg-zinc-950 dark:text-zinc-100;
+}
+
+::selection {
+  @apply bg-brand-500/20 text-zinc-900 dark:text-white;
+}
+
+:focus-visible {
+  @apply outline-2 outline-offset-2 outline-brand-500;
+}
+
+.checkerboard {
+  background-color: var(--checker-a);
+  background-image:
+    linear-gradient(45deg, var(--checker-b) 25%, transparent 25%),
+    linear-gradient(-45deg, var(--checker-b) 25%, transparent 25%),
+    linear-gradient(45deg, transparent 75%, var(--checker-b) 75%),
+    linear-gradient(-45deg, transparent 75%, var(--checker-b) 75%);
+  background-size: 16px 16px;
+  background-position:
+    0 0,
+    0 8px,
+    8px -8px,
+    -8px 0;
+}
+
+.dot-grid {
+  background-image: radial-gradient(rgb(113 113 122 / 0.28) 1px, transparent 1px);
+  background-size: 20px 20px;
+}
+
+@layer components {
+  .surface {
+    @apply rounded-2xl border border-zinc-200/70 bg-white/70 shadow-[0_1px_2px_rgb(0_0_0/0.04),0_8px_24px_-12px_rgb(0_0_0/0.08)] backdrop-blur-xl dark:border-white/10 dark:bg-zinc-900/60 dark:shadow-[0_1px_0_rgb(255_255_255/0.04)_inset,0_8px_32px_-12px_rgb(0_0_0/0.6)];
+  }
+
+  .field {
+    @apply w-full rounded-xl border border-zinc-200 bg-white/80 px-3.5 py-2.5 text-sm transition outline-none placeholder:text-zinc-400 hover:border-zinc-300 focus:border-brand-500 focus:ring-4 focus:ring-brand-500/15 dark:border-white/10 dark:bg-zinc-950/50 dark:placeholder:text-zinc-500 dark:hover:border-white/20;
+  }
+}
+
+.code-scroll {
+  scrollbar-width: thin;
+  scrollbar-color: rgb(113 113 122 / 0.4) transparent;
+}
+
+.code-highlight {
+  --sh-class: #7dd3fc;
+  --sh-identifier: #e4e4e7;
+  --sh-sign: #a1a1aa;
+  --sh-property: #93c5fd;
+  --sh-entity: #c4b5fd;
+  --sh-jsxliterals: #fde68a;
+  --sh-string: #86efac;
+  --sh-keyword: #f9a8d4;
+  --sh-comment: #71717a;
+}

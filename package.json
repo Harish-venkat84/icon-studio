@@ -1,0 +1,30 @@
+{
+  "name": "icon-studio",
+  "license": "MIT",
+  "private": true,
+  "packageManager": "pnpm@12.9.1",
+  "scripts": {
+    "dev": "pnpm --filter @icon-studio/studio dev",
+    "generate": "pnpm --filter @icon-studio/icons generate",
+    "build": "pnpm --filter @icon-studio/icons build && pnpm --filter @icon-studio/studio build",
+    "build:icons": "pnpm --filter @icon-studio/icons build",
+    "typecheck": "pnpm -r typecheck",
+    "test": "pnpm -r --if-present test",
+    "lint": "oxlint --fix",
+    "lint:check": "oxlint --max-warnings 0",
+    "format": "oxfmt",
+    "format:check": "oxfmt --check",
+    "prepare": "husky"
+  },
+  "lint-staged": {
+    "*.{js,jsx,ts,tsx,mjs,cjs,mts,cts}": "oxlint --fix --max-warnings 0",
+    "*": "oxfmt --no-error-on-unmatched-pattern"
+  },
+  "devDependencies": {
+    "husky": "9.1.7",
+    "lint-staged": "17.6.0",
+    "oxfmt": "0.71.0",
+    "oxlint": "1.86.0",
+    "typescript": "^5"
+  }
+}

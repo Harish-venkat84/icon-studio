@@ -1,0 +1,13 @@
+node_modules/
+dist/
+.next/
+out/
+*.tsbuildinfo
+next-env.d.ts
+packages/icons/src/generated/
+*.tgz
+.env
+.env.*
+!.env.example
+.DS_Store
+studio.env

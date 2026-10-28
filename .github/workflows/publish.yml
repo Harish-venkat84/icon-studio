@@ -1,0 +1,78 @@
+name: Publish Package
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - packages/icons/package.json
+  workflow_dispatch: {}
+
+concurrency:
+  group: publish
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      id-token: write
+    env:
+      NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+    steps:
+      - name: Skip without an npm token
+        if: env.NPM_TOKEN == ''
+        run: echo "::notice::Add an NPM_TOKEN repository secret to publish the icons package to npm."
+
+      - uses: actions/checkout@v4
+        if: env.NPM_TOKEN != ''
+
+      - uses: pnpm/action-setup@v6
+        if: env.NPM_TOKEN != ''
+
+      - uses: actions/setup-node@v4
+        if: env.NPM_TOKEN != ''
+        with:
+          node-version-file: .nvmrc
+          registry-url: 'https://registry.npmjs.org'
+          cache: pnpm
+
+      - name: Install dependencies
+        if: env.NPM_TOKEN != ''
+        run: pnpm install --frozen-lockfile
+
+      - name: Skip if this version is already published
+        if: env.NPM_TOKEN != ''
+        id: check
+        working-directory: packages/icons
+        run: |
+          NAME=$(node -p "require('./package.json').name")
+          VERSION=$(node -p "require('./package.json').version")
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+          if pnpm view "$NAME@$VERSION" version 2>/dev/null; then
+            echo "already_published=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "already_published=false" >> "$GITHUB_OUTPUT"
+          fi
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      - name: Build
+        if: env.NPM_TOKEN != '' && steps.check.outputs.already_published == 'false'
+        run: pnpm --filter @icon-studio/icons build
+
+      - name: Publish
+        if: env.NPM_TOKEN != '' && steps.check.outputs.already_published == 'false'
+        working-directory: packages/icons
+        run: pnpm publish --no-git-checks --access public
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      - name: Tag the release
+        if: env.NPM_TOKEN != '' && steps.check.outputs.already_published == 'false'
+        env:
+          VERSION: ${{ steps.check.outputs.version }}
+        run: |
+          git tag "v$VERSION"
+          git push origin "v$VERSION"

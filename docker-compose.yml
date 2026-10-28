@@ -1,0 +1,14 @@
+# Self-host the studio: cp apps/studio/.env.example studio.env, fill it in, then
+#   docker compose up -d
+services:
+  studio:
+    build:
+      context: .
+      args:
+        STUDIO_ALLOWED_ORIGINS: ${STUDIO_ALLOWED_ORIGINS:-}
+    image: icon-studio
+    restart: unless-stopped
+    ports:
+      - '3030:3030'
+    volumes:
+      - ./studio.env:/app/.env:ro

@@ -1,0 +1,38 @@
+{
+  "$schema": "./node_modules/oxlint/configuration_schema.json",
+  "plugins": ["typescript", "unicorn", "oxc", "react", "nextjs", "jsx-a11y"],
+  "env": {
+    "browser": true,
+    "node": true
+  },
+  "ignorePatterns": [
+    "node_modules",
+    ".next",
+    "dist",
+    "next-env.d.ts",
+    "packages/icons/src/generated"
+  ],
+  "rules": {
+    "typescript/no-explicit-any": "off",
+    "no-unused-vars": [
+      "error",
+      {
+        "argsIgnorePattern": "^_",
+        "varsIgnorePattern": "^_",
+        "ignoreRestSiblings": true
+      }
+    ],
+    "react/rules-of-hooks": "error",
+    "react/exhaustive-deps": "warn",
+    "react/no-danger": "off",
+    "nextjs/no-html-link-for-pages": "off",
+    "nextjs/no-sync-scripts": "error",
+    "jsx-a11y/label-has-associated-control": "off",
+    "jsx-a11y/click-events-have-key-events": "off",
+    "jsx-a11y/no-static-element-interactions": "off",
+    "jsx-a11y/control-has-associated-label": "off",
+    "jsx-a11y/prefer-tag-over-role": "off",
+    "jsx-a11y/no-noninteractive-element-interactions": "off",
+    "jsx-a11y/no-autofocus": "off"
+  }
+}
