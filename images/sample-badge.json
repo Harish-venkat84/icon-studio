@@ -1,0 +1,14 @@
+{
+  "name": "Sample badge",
+  "slug": "sample-badge",
+  "tags": [
+    "sample"
+  ],
+  "alt": "Indigo sample badge",
+  "width": 64,
+  "height": 64,
+  "bytes": 420,
+  "sha256": "c0f9e8403479a57bd13410f8eae2cb9d1ee88bfa48617650e0b21d02bd4a81a9",
+  "createdAt": "2026-10-28T00:00:00.000Z",
+  "updatedAt": "2026-10-28T00:00:00.000Z"
+}

@@ -1,0 +1,24 @@
+{
+  "name": "Logo mark",
+  "slug": "logo-mark",
+  "tags": [
+    "brand",
+    "sample"
+  ],
+  "mode": "multi",
+  "defaults": {
+    "size": 32
+  },
+  "colorProps": [
+    {
+      "name": "accentColor",
+      "value": "#6366f1"
+    },
+    {
+      "name": "backgroundColor",
+      "value": "#0f172a"
+    }
+  ],
+  "createdAt": "2026-10-28T00:00:00.000Z",
+  "updatedAt": "2026-10-28T00:00:00.000Z"
+}
